@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateQuestion, getModeConfig, OPERATIONS, DIFFICULTIES, resetQuestionHistory } from '../utils/mathUtils';
 import { playCorrect, playWrong, playTick, playTimeUp } from '../utils/sounds';

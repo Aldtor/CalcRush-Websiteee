@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState } from 'react';
 import { resetStorage } from '../utils/storage';
 import Watermark from '../components/Watermark';

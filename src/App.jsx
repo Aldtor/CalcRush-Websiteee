@@ -4,9 +4,11 @@ import HomeScreen from './screens/HomeScreen';
 import QuizScreen from './screens/QuizScreen';
 import ResultScreen from './screens/ResultScreen';
 import StatsScreen from './screens/StatsScreen';
+import LandingPage from './screens/LandingPage';
 import { loadStorage, saveStorage, updateStats, resetStorage } from './utils/storage';
 import { initAdMob, showBanner, hideBanner, prepareInterstitial, showInterstitial } from './utils/admobUtils';
 import { scheduleDailyReminder, cancelDailyReminder } from './utils/notificationUtils';
+import { Capacitor } from '@capacitor/core';
 
 const SCREEN = {
   SPLASH: 'splash',
@@ -23,6 +25,7 @@ export default function App() {
   const [storageData, setStorageData] = useState(() => loadStorage());
   const [theme, setTheme] = useState(() => loadStorage().theme || 'dark');
   const [adLoading, setAdLoading] = useState(false);
+  const [quizKey, setQuizKey] = useState(0);
 
   // Apply theme
   useEffect(() => {
@@ -88,6 +91,7 @@ export default function App() {
       return updated;
     });
     setQuizConfig(config);
+    setQuizKey(prev => prev + 1);
     setScreen(SCREEN.QUIZ);
     // Pre-load the interstitial in the background while the user plays.
     prepareInterstitial().catch(() => {});
@@ -109,7 +113,7 @@ export default function App() {
     try {
       const timeout = new Promise(resolve => setTimeout(resolve, 3000));
       await Promise.race([showInterstitial(), timeout]);
-    } catch (_) {
+    } catch {
       // Ad failed — just continue
     }
 
@@ -123,6 +127,7 @@ export default function App() {
   }
 
   function handleRestart() {
+    setQuizKey(prev => prev + 1);
     setScreen(SCREEN.QUIZ);
   }
 
@@ -137,6 +142,17 @@ export default function App() {
   function handleResetStats() {
     const reset = resetStorage();
     setStorageData(reset);
+  }
+
+  const isNative = Capacitor.isNativePlatform();
+
+  if (!isNative) {
+    return (
+      <LandingPage
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
   }
 
   return (
@@ -157,7 +173,7 @@ export default function App() {
       )}
       {screen === SCREEN.QUIZ && quizConfig && (
         <QuizScreen
-          key={`${quizConfig.mode}-${quizConfig.operation}-${quizConfig.difficulty}-${Date.now()}`}
+          key={`${quizConfig.mode}-${quizConfig.operation}-${quizConfig.difficulty}-${quizKey}`}
           config={quizConfig}
           onFinish={handleQuizFinish}
           onQuit={handleQuit}

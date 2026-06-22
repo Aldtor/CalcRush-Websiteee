@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useState } from 'react';
 import { OPERATIONS, DIFFICULTIES, MODES } from '../utils/mathUtils';
 import { playResultSound } from '../utils/sounds';

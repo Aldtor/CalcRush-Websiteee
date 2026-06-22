@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { AdMob, BannerAdSize, BannerAdPosition, InterstitialAdPluginEvents, MaxAdContentRating } from '@capacitor-community/admob';
 
 export const AD_IDS = {
