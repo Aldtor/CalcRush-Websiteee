@@ -1,0 +1,115 @@
+﻿
+<!-- TopAppBar (Suppressed as this is a linear/transactional success screen, but keeping a simplified header per JSON if forced, though instructions suggest suppressing. I will suppress the full TopAppBar and BottomNavBar to focus on the result canvas.) -->
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md px-container-padding flex flex-col gap-stack-lg flex-grow z-10">
+<!-- 1. HERO Section -->
+<section class="flex flex-col items-center text-center gap-stack-sm pt-stack-md">
+<div class="text-6xl mb-2 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">ðŸ†</div>
+<h1 class="font-headline-lg text-headline-lg text-white">Excellent! â­</h1>
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-400 font-label-bold text-label-bold shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+<span class="material-symbols-outlined text-[16px]">celebration</span>
+                New Personal Best!
+            </div>
+</section>
+<!-- 2. ACCURACY RING -->
+<section class="flex flex-col items-center justify-center relative">
+<div class="relative w-[160px] h-[160px] flex items-center justify-center">
+<!-- SVG Donut -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Track -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="rgba(255,255,255,0.1)" stroke-linecap="round" stroke-width="8"></circle>
+<!-- Progress Arc (82% of 251.2 circumference = 205.98) -->
+<defs>
+<lineargradient id="ringGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#BF40FF"></stop>
+<stop offset="100%" stop-color="#00D2FF"></stop>
+</lineargradient>
+</defs>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="url(#ringGradient)" stroke-dasharray="251.2" stroke-dashoffset="45.216" stroke-linecap="round" stroke-width="8" style="filter: drop-shadow(0 0 8px rgba(191,64,255,0.6));"></circle>
+</svg>
+<!-- Center Text -->
+<div class="absolute flex flex-col items-center justify-center">
+<span class="font-display-xl text-display-xl text-white tracking-tighter">82<span class="text-2xl">%</span></span>
+</div>
+</div>
+<p class="mt-4 font-label-bold text-label-bold text-outline uppercase tracking-widest">ACCURACY</p>
+</section>
+<!-- 3. SCORE CARD -->
+<section class="glass-card rounded-2xl p-6 flex flex-row items-center justify-between gap-6 relative overflow-hidden">
+<!-- Decorative blur blob -->
+<div class="absolute -top-10 -left-10 w-32 h-32 bg-primary-container/20 rounded-full blur-3xl"></div>
+<div class="flex flex-col z-10">
+<span class="font-label-bold text-label-bold text-outline uppercase">Score</span>
+<span class="font-stats-num text-[56px] leading-[56px] font-black text-primary neon-text-primary mt-1">34</span>
+</div>
+<div class="grid grid-cols-2 gap-x-6 gap-y-4 z-10 border-l border-white/10 pl-6">
+<div class="flex flex-col">
+<span class="text-[12px] text-outline uppercase tracking-wider font-semibold">Correct</span>
+<span class="font-body-lg text-body-lg text-emerald-400 font-bold">16</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[12px] text-outline uppercase tracking-wider font-semibold">Wrong</span>
+<span class="font-body-lg text-body-lg text-error font-bold">4</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[12px] text-outline uppercase tracking-wider font-semibold">Total</span>
+<span class="font-body-lg text-body-lg text-white font-bold">20</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[12px] text-outline uppercase tracking-wider font-semibold">Time</span>
+<span class="font-body-lg text-body-lg text-white font-bold">43s</span>
+</div>
+</div>
+</section>
+<!-- 4. SESSION TAGS -->
+<section class="flex flex-row flex-wrap justify-center gap-3">
+<div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 border-white/10">
+<span class="text-lg leading-none">âš¡</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant">Speed 60s</span>
+</div>
+<div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 border-white/10">
+<span class="text-primary font-bold text-lg leading-none">Ã—</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant">Multiply</span>
+</div>
+<div class="glass-card px-4 py-2 rounded-full flex items-center gap-2 border-white/10">
+<span class="text-amber-400 text-sm leading-none">ðŸŸ¡</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant">Medium</span>
+</div>
+</section>
+<!-- 5. STREAK -->
+<section class="glass-card rounded-xl p-4 flex flex-row items-center gap-4 border border-amber-500/20 bg-amber-500/5 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent opacity-50"></div>
+<div class="text-3xl drop-shadow-[0_0_10px_rgba(245,158,11,0.8)] z-10">ðŸ”¥</div>
+<div class="flex flex-col z-10">
+<h3 class="font-headline-md text-headline-md text-amber-400 text-[20px] leading-tight">Best Streak: 7</h3>
+<p class="font-body-md text-[14px] text-amber-100/70">Keep the fire burning!</p>
+</div>
+</section>
+<!-- 6. ALL-TIME STATS -->
+<section class="grid grid-cols-3 gap-3">
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center gap-1 border-white/5 hover:bg-white/10 transition-colors">
+<span class="text-[11px] text-outline uppercase tracking-widest font-bold">Total Solved</span>
+<span class="font-headline-md text-headline-md text-white">247</span>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center gap-1 border-white/5 hover:bg-white/10 transition-colors">
+<span class="text-[11px] text-outline uppercase tracking-widest font-bold">Avg Acc.</span>
+<span class="font-headline-md text-headline-md text-white">79%</span>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center gap-1 border-white/5 hover:bg-white/10 transition-colors">
+<span class="text-[11px] text-outline uppercase tracking-widest font-bold">Best Score</span>
+<span class="font-headline-md text-headline-md text-primary">34</span>
+</div>
+</section>
+<!-- 7. BUTTONS -->
+<section class="flex flex-col gap-4 mt-4">
+<button class="w-full py-4 rounded-xl font-label-bold text-label-bold text-white bg-gradient-to-r from-secondary-container to-inverse-primary neon-glow flex items-center justify-center gap-2 hover:scale-[0.98] active:scale-95 transition-all">
+<span class="material-symbols-outlined">refresh</span>
+                PLAY AGAIN
+            </button>
+<button class="w-full py-4 rounded-xl font-label-bold text-label-bold text-on-surface-variant border border-outline-variant hover:bg-white/5 active:bg-white/10 flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined">home</span>
+                HOME
+            </button>
+</section>
+</main>
+

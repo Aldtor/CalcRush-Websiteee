@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CalcRush - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&amp;family=Nunito:wght@800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#eddeed",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#3b323d",
+                    "inverse-on-surface": "#362d39",
+                    "surface-variant": "#3b323d",
+                    "on-secondary-fixed": "#23005b",
+                    "on-surface-variant": "#d3c1d6",
+                    "primary-fixed-dim": "#e8b3ff",
+                    "on-tertiary-fixed": "#1f1242",
+                    "surface-tint": "#e8b3ff",
+                    "primary": "#e8b3ff",
+                    "on-primary-fixed": "#310049",
+                    "on-secondary": "#3c0090",
+                    "on-surface": "#eddeed",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "primary-fixed": "#f6d9ff",
+                    "on-tertiary": "#342859",
+                    "on-primary-fixed-variant": "#7200a3",
+                    "on-background": "#eddeed",
+                    "outline": "#9c8ba0",
+                    "on-tertiary-fixed-variant": "#4b3f71",
+                    "background": "#18111b",
+                    "tertiary-container": "#9689c0",
+                    "secondary-container": "#7000ff",
+                    "inverse-primary": "#9600d4",
+                    "surface-container-lowest": "#130c16",
+                    "secondary": "#d1bcff",
+                    "on-error": "#690005",
+                    "outline-variant": "#4f4254",
+                    "tertiary-fixed": "#e8ddff",
+                    "surface-container-high": "#2f2732",
+                    "on-tertiary-container": "#2d2151",
+                    "surface-container": "#251d28",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#cdbef9",
+                    "tertiary": "#cdbef9",
+                    "surface-container-low": "#211923",
+                    "surface-dim": "#18111b",
+                    "error-container": "#93000a",
+                    "surface": "#18111b",
+                    "on-primary": "#500074",
+                    "secondary-fixed": "#e9ddff",
+                    "primary-container": "#c960ff",
+                    "on-secondary-container": "#ddcdff",
+                    "on-primary-container": "#460066",
+                    "surface-bright": "#3f3642",
+                    "on-secondary-fixed-variant": "#5700c9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "unit": "8px",
+                    "stack-md": "16px",
+                    "container-padding": "24px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Lexend"],
+                    "headline-md": ["Nunito"],
+                    "body-md": ["Lexend"],
+                    "headline-lg": ["Nunito"],
+                    "display-xl": ["Nunito"],
+                    "stats-num": ["Nunito"],
+                    "body-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "800" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "900" }],
+                    "display-xl": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "900" }],
+                    "stats-num": ["40px", { "lineHeight": "40px", "fontWeight": "900" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(191, 64, 255, 0.5), inset 0 0 10px rgba(191, 64, 255, 0.2);
+            border-color: rgba(191, 64, 255, 0.8);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-stack-lg overflow-x-hidden">
+<!-- TOP BAR -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-[#0D0B1A]/80 backdrop-blur-2xl docked full-width top-0 shadow-[0_4px_30px_rgba(0,0,0,0.1)] sticky z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<h1 class="font-sans tracking-tight font-bold text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600 drop-shadow-[0_0_10px_rgba(191,64,255,0.5)]">CalcRush</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold">
+<span class="material-symbols-outlined text-lg">bar_chart</span>
+                Stats
+            </button>
+<button class="text-slate-400 hover:text-white/10 transition-colors">
+<span class="material-symbols-outlined text-xl">dark_mode</span>
+</button>
+</div>
+</header>
+<main class="px-container-padding pt-stack-lg max-w-md mx-auto flex flex-col gap-stack-lg">
+<!-- HERO STATS STRIP -->
+<section class="glass-card rounded-xl p-4 flex justify-between items-center">
+<div class="flex flex-col items-center gap-1 w-1/3">
+<span class="material-symbols-outlined text-primary-container text-xl">done_all</span>
+<span class="font-stats-num text-stats-num text-primary-container drop-shadow-[0_0_8px_rgba(201,96,255,0.8)]">247</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-xs text-center">Solved</span>
+</div>
+<div class="w-px h-12 bg-white/10"></div>
+<div class="flex flex-col items-center gap-1 w-1/3">
+<span class="material-symbols-outlined text-secondary-container text-xl">my_location</span>
+<span class="font-stats-num text-stats-num text-secondary-container drop-shadow-[0_0_8px_rgba(112,0,255,0.8)]">82%</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-xs text-center">Accuracy</span>
+</div>
+<div class="w-px h-12 bg-white/10"></div>
+<div class="flex flex-col items-center gap-1 w-1/3">
+<span class="material-symbols-outlined text-tertiary text-xl">trophy</span>
+<span class="font-stats-num text-stats-num text-tertiary drop-shadow-[0_0_8px_rgba(205,190,249,0.8)]">34</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant text-xs text-center">Best Score</span>
+</div>
+</section>
+<!-- SELECT MODE -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Select Mode</h2>
+<div class="grid grid-cols-2 gap-stack-sm">
+<!-- Speed Rush (Active) -->
+<button class="glass-card rounded-xl p-4 flex flex-col items-center gap-2 text-center neon-glow-primary relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent"></div>
+<div class="absolute top-2 right-2 bg-primary text-on-primary rounded-full p-0.5">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl mb-1 drop-shadow-[0_0_8px_rgba(232,179,255,0.8)]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-bold text-label-bold text-primary">Speed Rush</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">30s timer</span>
+</button>
+<!-- Speed Blitz -->
+<button class="glass-card rounded-xl p-4 flex flex-col items-center gap-2 text-center relative overflow-hidden group hover:border-orange-500/50 transition-colors">
+<span class="material-symbols-outlined text-orange-400 text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-bold text-label-bold text-on-surface">Speed Blitz</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">60s timer</span>
+</button>
+<!-- Precision 10 -->
+<button class="glass-card rounded-xl p-4 flex flex-col items-center gap-2 text-center relative overflow-hidden group hover:border-teal-500/50 transition-colors">
+<span class="material-symbols-outlined text-teal-400 text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">my_location</span>
+<span class="font-label-bold text-label-bold text-on-surface">Precision 10</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">10 Qs</span>
+</button>
+<!-- Precision 20 -->
+<button class="glass-card rounded-xl p-4 flex flex-col items-center gap-2 text-center relative overflow-hidden group hover:border-yellow-500/50 transition-colors">
+<span class="material-symbols-outlined text-yellow-400 text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="font-label-bold text-label-bold text-on-surface">Precision 20</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">20 Qs</span>
+</button>
+<!-- Endless -->
+<button class="glass-card rounded-xl p-4 flex flex-col items-center gap-2 text-center relative overflow-hidden group hover:border-secondary-container/50 transition-colors col-span-2 mt-2">
+<span class="material-symbols-outlined text-secondary text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">all_inclusive</span>
+<span class="font-label-bold text-label-bold text-on-surface">Endless</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">No timer</span>
+</button>
+</div>
+</section>
+<!-- OPERATION -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Operation</h2>
+<div class="flex overflow-x-auto gap-2 pb-2 -mx-container-padding px-container-padding snap-x scrollbar-hide">
+<button class="snap-start shrink-0 rounded-full px-6 py-2 glass-card font-label-bold text-label-bold text-on-surface whitespace-nowrap border-white/10">
+                    + Add
+                </button>
+<button class="snap-start shrink-0 rounded-full px-6 py-2 glass-card font-label-bold text-label-bold text-on-surface whitespace-nowrap border-white/10">
+                    − Sub
+                </button>
+<button class="snap-start shrink-0 rounded-full px-6 py-2 bg-primary-container text-on-primary-container font-label-bold text-label-bold whitespace-nowrap drop-shadow-[0_0_10px_rgba(201,96,255,0.6)] border border-primary-fixed">
+                    × Mul
+                </button>
+<button class="snap-start shrink-0 rounded-full px-6 py-2 glass-card font-label-bold text-label-bold text-on-surface whitespace-nowrap border-white/10">
+                    ÷ Div
+                </button>
+<button class="snap-start shrink-0 rounded-full px-6 py-2 glass-card font-label-bold text-label-bold text-on-surface whitespace-nowrap border-white/10">
+                    ∞ Mix
+                </button>
+</div>
+</section>
+<!-- DIFFICULTY -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Difficulty</h2>
+<div class="flex gap-2 w-full">
+<button class="flex-1 rounded-full py-3 glass-card font-label-bold text-label-bold text-green-400 border-green-400/20 hover:bg-green-400/10 transition-colors flex items-center justify-center gap-1">
+                    Easy
+                </button>
+<button class="flex-1 rounded-full py-3 bg-yellow-500/20 font-label-bold text-label-bold text-yellow-400 border border-yellow-400/50 flex items-center justify-center gap-1 shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                    Medium
+                </button>
+<button class="flex-1 rounded-full py-3 glass-card font-label-bold text-label-bold text-red-400 border-red-400/20 hover:bg-red-400/10 transition-colors flex items-center justify-center gap-1">
+                    Hard
+                </button>
+</div>
+</section>
+<!-- CTA -->
+<div class="pt-stack-md pb-stack-lg">
+<button class="w-full h-[60px] rounded-xl bg-gradient-to-r from-secondary-container to-inverse-primary text-white font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(150,0,212,0.4)] active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                Start Rush
+            </button>
+</div>
+</main>
+<!-- BOTTOM NAV SUPPRESSED: Transactional / Task Setup Screen Intent -->
+</body></html>
