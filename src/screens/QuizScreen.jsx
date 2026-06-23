@@ -126,10 +126,10 @@ export default function QuizScreen({ config, onFinish, onQuit }) {
     } catch (_) {}
   }
 
-  const loadNext = useCallback(() => {
+  const loadNext = useCallback((currentStreak = 0) => {
     setQuestionAnim('');
     setTimeout(() => {
-      setQuestion(generateQuestion(difficulty, operation, config.advancedMath));
+      setQuestion(generateQuestion(difficulty, operation, config.advancedMath, currentStreak));
       setInput('');
       setFeedback(null);
       setCorrectAnswer(null);
@@ -140,7 +140,7 @@ export default function QuizScreen({ config, onFinish, onQuit }) {
     }, 20);
   }, [difficulty, operation, config.advancedMath]);
 
-  useEffect(() => { resetQuestionHistory(); loadNext(); }, []);
+  useEffect(() => { resetQuestionHistory(); loadNext(0); }, []);
 
   // Timer
   useEffect(() => {
@@ -221,7 +221,7 @@ export default function QuizScreen({ config, onFinish, onQuit }) {
     }
 
     feedbackRef.current = setTimeout(() => {
-      loadNext();
+      loadNext(isCorrect ? streak + 1 : 0);
     }, isCorrect ? 900 : 1200);
   }
 

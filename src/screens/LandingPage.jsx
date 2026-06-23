@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
 
 const screenshots = [
-  { src: '/stitch_home.png', title: 'Home Screen' },
-  { src: '/stitch_quiz.png', title: 'Interactive Quiz' },
-  { src: '/stitch_stats.png', title: 'Stats & Charts' },
-  { src: '/stitch_result.png', title: 'Detailed Results' },
-  { src: '/stitch_splash.png', title: 'Splash Screen' },
+  { src: '/calcRush-ss1.jpeg', title: 'Home Screen' },
+  { src: '/calcRush-ss2.jpeg', title: 'Interactive Quiz' },
+  { src: '/calcRush-ss3.jpeg', title: 'Stats & Charts' },
+  { src: '/calcRush-ss4.jpeg', title: 'Detailed Results' },
 ];
 
 const features = [
-  { icon: '⚡', title: 'Speed Challenges', desc: 'Test your reflexes with timed sessions. Customize your countdown durations to build rapid thinking skills.' },
-  { icon: '🎯', title: 'Accuracy Focus', desc: 'Answer sets of questions at your own pace. Watch your streak fire burn, and get comprehensive error logs to review mistakes.' },
-  { icon: '🧠', title: 'Advanced Math Mode', desc: 'Enable advanced operations including BODMAS, algebraic missing numbers, and squares/square roots.' },
-  { icon: '📊', title: 'Executive Dashboard', desc: 'Track your solved questions, average accuracy, and historical progress in a sleek modern column chart.' },
-  { icon: '🔊', title: 'Premium Audio & Haptics', desc: 'Satisfying correct/wrong sounds, celebration effects, and crisp physical keypress vibrations.' },
-  { icon: '🔔', title: 'Daily Reminders', desc: 'Schedule recurring local notifications at 7:00 PM to help keep your math learning streak alive.' }
+  { icon: '⏱️', title: 'Timed Challenges', desc: 'Each round is timed — the pressure makes simple math surprisingly fun and intense.' },
+  { icon: '📈', title: 'Adaptive Difficulty', desc: 'Easy, Medium, and Hard modes with distinct question generation algorithms.' },
+  { icon: '📊', title: 'Stats & History', desc: 'Track your accuracy, average time, and improvement across sessions.' },
+  { icon: '🎁', title: 'Rewarded Ads', desc: 'AdMob rewarded interstitials shown after quiz completion — clean, non-intrusive monetization.' },
+  { icon: '🌙', title: 'Dark Mode UI', desc: 'Premium dark-first UI designed for comfortable long sessions without eye strain.' },
+  { icon: '📱', title: 'Native Android', desc: 'Built with Capacitor wrapping a React web app — smooth, native APK performance.' }
 ];
 
 const faqs = [
@@ -40,7 +39,7 @@ const faqs = [
   }
 ];
 
-export default function LandingPage({ theme, onToggleTheme }) {
+export default function LandingPage({ theme, onToggleTheme, onPlayDemo }) {
   const [activeTab, setActiveTab] = useState('home');
   const [activeScreenshot, setActiveScreenshot] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -63,6 +62,46 @@ export default function LandingPage({ theme, onToggleTheme }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeTab]);
+
+  // Swipe and Keyboard listeners for carousel
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  useEffect(() => {
+    if (activeTab !== 'home') return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        setActiveScreenshot((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setActiveScreenshot((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTab]);
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isSwipe = Math.abs(distance) > 40;
+    if (isSwipe) {
+      if (distance > 0) {
+        setActiveScreenshot((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
+      } else {
+        setActiveScreenshot((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
+      }
+    }
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
@@ -93,7 +132,99 @@ export default function LandingPage({ theme, onToggleTheme }) {
       paddingTop: 'env(safe-area-inset-top, 0px)',
       display: 'flex',
       flexDirection: 'column',
+      position: 'relative',
+      overflow: 'hidden',
     }}>
+      <style>{`
+        @keyframes shine {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+        .btn-shimmer {
+          position: relative;
+          overflow: hidden;
+        }
+        .btn-shimmer::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.25) 50%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          transform: skewX(-25deg);
+          animation: shine 4s infinite linear;
+        }
+        @keyframes floatUp {
+          0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.12; }
+          90% { opacity: 0.12; }
+          100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+        .math-symbol {
+          position: fixed;
+          color: var(--color-primary-light);
+          font-family: 'Outfit', sans-serif;
+          font-weight: 800;
+          pointer-events: none;
+          user-select: none;
+          z-index: 1;
+          animation: floatUp 15s infinite linear;
+        }
+        .feat-card-hover {
+          transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        .feat-card-hover:hover {
+          transform: translateY(-5px);
+          border-color: rgba(139, 92, 246, 0.35) !important;
+          box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15), 0 8px 32px rgba(0,0,0,0.15) !important;
+        }
+        .stat-card-hover {
+          transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        .stat-card-hover:hover {
+          transform: translateY(-5px) scale(1.02) !important;
+          border-color: rgba(245, 158, 11, 0.45) !important;
+          box-shadow: 0 10px 30px rgba(245, 158, 11, 0.22), 0 8px 32px rgba(0,0,0,0.15) !important;
+        }
+      `}</style>
+
+      {/* Floating Math Symbols */}
+      {[
+        { symbol: '+', left: '10%', size: '32px', delay: '0s', duration: '18s' },
+        { symbol: '−', left: '25%', size: '24px', delay: '3s', duration: '22s' },
+        { symbol: '×', left: '40%', size: '28px', delay: '7s', duration: '15s' },
+        { symbol: '÷', left: '55%', size: '36px', delay: '2s', duration: '20s' },
+        { symbol: '√', left: '70%', size: '30px', delay: '9s', duration: '17s' },
+        { symbol: '%', left: '85%', size: '22px', delay: '5s', duration: '24s' },
+        { symbol: 'x²', left: '15%', size: '26px', delay: '11s', duration: '19s' },
+        { symbol: '+', left: '60%', size: '28px', delay: '13s', duration: '21s' },
+        { symbol: '×', left: '80%', size: '34px', delay: '1s', duration: '16s' },
+        { symbol: '−', left: '48%', size: '24px', delay: '15s', duration: '23s' },
+      ].map((p, idx) => (
+        <div
+          key={idx}
+          className="math-symbol"
+          style={{
+            left: p.left,
+            fontSize: p.size,
+            animationDelay: p.delay,
+            animationDuration: p.duration,
+            opacity: 0,
+          }}
+        >
+          {p.symbol}
+        </div>
+      ))}
+
+      {/* FIXED GLOW SPHERES */}
+      <div style={{ position: 'fixed', top: '10%', left: '5%', width: '450px', height: '450px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0) 70%)', filter: 'blur(50px)', zIndex: 0, pointerEvents: 'none' }} />
+      <div style={{ position: 'fixed', bottom: '15%', right: '5%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0) 70%)', filter: 'blur(60px)', zIndex: 0, pointerEvents: 'none' }} />
 
       {/* Premium Navigation Header */}
       <header style={{
@@ -203,8 +334,27 @@ export default function LandingPage({ theme, onToggleTheme }) {
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
+            <button
+              onClick={onPlayDemo}
+              className="btn btn-secondary"
+              style={{
+                borderRadius: 12, padding: '10px 18px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6,
+                borderColor: 'var(--color-primary-light)', color: 'var(--color-primary-light)',
+                fontWeight: 700
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(124, 58, 237, 0.1)';
+                e.currentTarget.style.transform = 'scale(1.03)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'var(--color-card)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              Play Demo 🚀
+            </button>
             <a 
-              href="https://play.google.com/store/apps/details?id=com.aldtor.calcrush" 
+              href="https://play.google.com/store/apps/details?id=com.aldtor.calcrush&pcampaignid=web_share" 
               target="_blank" 
               rel="noopener noreferrer"
               className="btn btn-primary"
@@ -218,17 +368,30 @@ export default function LandingPage({ theme, onToggleTheme }) {
         )}
 
         {isMobile && (
-          <button
-            onClick={onToggleTheme}
-            style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: 'var(--color-card)', border: '1px solid var(--color-border)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 14, cursor: 'pointer',
-            }}
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              onClick={onPlayDemo}
+              style={{
+                borderRadius: 8, padding: '6px 12px', fontSize: 11, fontWeight: 700,
+                background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))',
+                color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4,
+                boxShadow: '0 2px 10px rgba(124, 58, 237, 0.3)'
+              }}
+            >
+              Play Demo 🚀
+            </button>
+            <button
+              onClick={onToggleTheme}
+              style={{
+                width: 32, height: 32, borderRadius: 8,
+                background: 'var(--color-card)', border: '1px solid var(--color-border)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 14, cursor: 'pointer',
+              }}
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          </div>
         )}
       </header>
 
@@ -237,56 +400,492 @@ export default function LandingPage({ theme, onToggleTheme }) {
 
         {/* ================= HOME TAB ================= */}
         {activeTab === 'home' && (
-          <div className="anim-fade-in" style={{ paddingBottom: 60 }}>
-            {/* Hero Section */}
-            <section style={{
-              padding: isMobile ? '40px 16px 60px' : '80px 32px 100px',
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : '1.1fr 0.9fr',
-              gap: 40,
-              maxWidth: 1100,
-              margin: '0 auto',
-              width: '100%',
-              alignItems: 'center',
-            }}>
-              {/* Left Column */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div style={{
-                  display: 'inline-flex', padding: '6px 14px', borderRadius: 50,
-                  background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)',
-                  color: 'var(--color-primary-light)', fontSize: 11, fontWeight: 700,
-                  letterSpacing: '0.06em', width: 'fit-content'
-                }}>
-                  🚀 NOW AVAILABLE ON GOOGLE PLAY
-                </div>
-                
-                <h1 style={{
-                  fontFamily: "'Outfit', sans-serif", 
-                  fontSize: isMobile ? '2.2rem' : '3.6rem',
-                  fontWeight: 900, lineHeight: 1.1, letterSpacing: '-1.5px', margin: 0,
-                }}>
-                  Master Mental Math <br/>
-                  <span className="text-gradient">Fast & Fun</span>
-                </h1>
-                
-                <p style={{
-                  fontSize: isMobile ? 15 : 16, color: 'var(--color-text-muted)', lineHeight: 1.6, margin: 0,
-                  maxWidth: 540,
-                }}>
-                  Train your brain, increase your calculation speed, and test your precision. CalcRush combines high-end obsidian aesthetics with custom practice modes, speed challenges, and accuracy scores to deliver the ultimate mental math playground.
-                </p>
+          <div className="anim-fade-in" style={{ paddingBottom: 80 }}>
+            {/* HERO BANNER */}
+            <div style={{ width: '100%', background: 'var(--color-bg)' }}>
+              <div style={{
+                width: '100%',
+                overflow: 'hidden',
+                borderBottom: '1px solid var(--color-border)',
+                boxShadow: '0 10px 60px rgba(0,0,0,.5), 0 0 60px rgba(124,58,237,.08)',
+              }}>
+                <img 
+                  src="/calcRush-banner.png" 
+                  alt="CalcRush Feature Banner" 
+                  style={{ width: '100%', display: 'block', objectFit: 'contain' }}
+                  loading="eager"
+                />
+              </div>
+            </div>
 
-                {/* Badges / CTAs */}
-                <div style={{ display: 'flex', gap: 16, marginTop: 12, flexWrap: 'wrap' }}>
+            {/* APP INFO */}
+            <div style={{ padding: isMobile ? '40px 16px 20px' : '60px 32px 30px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 800, margin: '0 auto' }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 20 }}>
+                <span style={{ display: 'inline-flex', padding: '6px 14px', borderRadius: 50, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em' }}>
+                  🚀 Live on Google Play
+                </span>
+                <span style={{ display: 'inline-flex', padding: '6px 14px', borderRadius: 50, background: 'rgba(59,130,246,.1)', color: '#3B82F6', border: '1px solid rgba(59,130,246,.2)', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em' }}>
+                  📱 Android
+                </span>
+                <span style={{ display: 'inline-flex', padding: '6px 14px', borderRadius: 50, background: 'rgba(245,158,11,.1)', color: '#F59E0B', border: '1px solid rgba(245,158,11,.2)', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em' }}>
+                  AdMob
+                </span>
+              </div>
+
+              <h1 style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: 'clamp(2.4rem, 6vw, 4rem)',
+                fontWeight: 900,
+                letterSpacing: '-.04em',
+                lineHeight: 1.05,
+                marginBottom: 16,
+                marginTop: 0,
+              }}>
+                <span className="text-gradient">Calc</span>Rush
+              </h1>
+
+              <p style={{
+                color: 'var(--color-text-muted)',
+                fontSize: 'clamp(0.95rem, 3vw, 1.05rem)',
+                lineHeight: 1.7,
+                marginBottom: 32,
+                maxWidth: 680,
+              }}>
+                A fast-paced math quiz app that challenges your mental arithmetic with timed levels, difficulty scaling, and reward-based ads. Built with React Native + Capacitor for Android.
+              </p>
+
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+                <a 
+                  href="https://play.google.com/store/apps/details?id=com.aldtor.calcrush&pcampaignid=web_share" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-primary glow-primary btn-shimmer"
+                  style={{
+                    borderRadius: 16,
+                    padding: '12px 28px',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span style={{ fontSize: 22 }}>🤖</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: 9, opacity: 0.8, fontWeight: 600, letterSpacing: '0.05em' }}>GET IT ON</div>
+                    <div style={{ fontSize: 15, lineHeight: 1.1 }}>Google Play</div>
+                  </div>
+                </a>
+                <button 
+                  onClick={onPlayDemo}
+                  className="btn btn-primary glow-primary btn-shimmer"
+                  style={{
+                    borderRadius: 16,
+                    padding: '14px 28px',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    minHeight: 56,
+                    background: 'linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark))',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 30px rgba(168, 85, 247, 0.6)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(168, 85, 247, 0.4)';
+                  }}
+                >
+                  Play Web Demo 🚀
+                </button>
+                <button 
+                  onClick={() => setActiveTab('support')}
+                  className="btn btn-secondary"
+                  style={{
+                    borderRadius: 16,
+                    padding: '14px 28px',
+                    fontWeight: 700,
+                    fontSize: 14,
+                    minHeight: 56,
+                  }}
+                >
+                  Get Support Hub
+                </button>
+              </div>
+            </div>
+
+            {/* SCREENSHOTS CAROUSEL */}
+            <section style={{ maxWidth: 960, margin: '60px auto 0', padding: '0 16px', width: '100%' }}>
+              <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-primary-light)', marginBottom: 8, display: 'inline-block' }}>
+                  Screenshots
+                </span>
+                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? '1.8rem' : '2.5rem', fontWeight: 900, margin: '0 0 8px 0', letterSpacing: '-0.5px' }}>
+                  App <span className="text-gradient">Gallery</span>
+                </h2>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: 0 }}>
+                  Use the arrows or keyboard Arrow keys to browse screenshots.
+                </p>
+              </div>
+
+              <div 
+                style={{ position: 'relative', width: '100%', userSelect: 'none' }}
+                onMouseEnter={e => {
+                  const elLeft = document.getElementById('carPrevBtn');
+                  const elRight = document.getElementById('carNextBtn');
+                  if (elLeft) elLeft.style.opacity = '1';
+                  if (elRight) elRight.style.opacity = '1';
+                }}
+                onMouseLeave={e => {
+                  const elLeft = document.getElementById('carPrevBtn');
+                  const elRight = document.getElementById('carNextBtn');
+                  if (elLeft) elLeft.style.opacity = isMobile ? '1' : '0.6';
+                  if (elRight) elRight.style.opacity = isMobile ? '1' : '0.6';
+                }}
+              >
+                {/* Prev Button */}
+                <button
+                  id="carPrevBtn"
+                  onClick={() => setActiveScreenshot(prev => (prev === 0 ? screenshots.length - 1 : prev - 1))}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: isMobile ? 12 : 20,
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: isMobile ? 42 : 52,
+                    height: isMobile ? 42 : 52,
+                    borderRadius: '50%',
+                    background: 'rgba(9, 9, 15, 0.8)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)',
+                    fontSize: isMobile ? '1.5rem' : '1.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    opacity: isMobile ? '1' : '0.6',
+                    outline: 'none',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))';
+                    e.currentTarget.style.borderColor = 'transparent';
+                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(9, 9, 15, 0.8)';
+                    e.currentTarget.style.borderColor = 'var(--color-border)';
+                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                  }}
+                >
+                  &#8249;
+                </button>
+
+                {/* Carousel Viewport */}
+                <div style={{
+                  overflow: 'hidden',
+                  borderRadius: 24,
+                  width: '100%',
+                  boxShadow: '0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(124,58,237,.12)',
+                  border: '1px solid var(--color-border)',
+                  background: '#09090f',
+                  height: isMobile ? 320 : 540,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <div 
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '24px 0',
+                    }}
+                  >
+                    <img 
+                      src={screenshots[activeScreenshot].src} 
+                      alt={screenshots[activeScreenshot].title} 
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        objectFit: 'contain',
+                        display: 'block',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Next Button */}
+                <button
+                  id="carNextBtn"
+                  onClick={() => setActiveScreenshot(prev => (prev === screenshots.length - 1 ? 0 : prev + 1))}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: isMobile ? 12 : 20,
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: isMobile ? 42 : 52,
+                    height: isMobile ? 42 : 52,
+                    borderRadius: '50%',
+                    background: 'rgba(9, 9, 15, 0.8)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)',
+                    fontSize: isMobile ? '1.5rem' : '1.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    opacity: isMobile ? '1' : '0.6',
+                    outline: 'none',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))';
+                    e.currentTarget.style.borderColor = 'transparent';
+                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(9, 9, 15, 0.8)';
+                    e.currentTarget.style.borderColor = 'var(--color-border)';
+                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                  }}
+                >
+                  &#8250;
+                </button>
+              </div>
+
+              {/* Dots and Counter */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 24 }}>
+                {screenshots.map((s, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setActiveScreenshot(idx)}
+                    style={{
+                      width: activeScreenshot === idx ? 28 : 8,
+                      height: 8,
+                      borderRadius: activeScreenshot === idx ? 4 : '50%',
+                      background: activeScreenshot === idx ? 'var(--color-primary-light)' : 'var(--color-border)',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s',
+                      boxShadow: activeScreenshot === idx ? '0 0 10px var(--color-primary-light)' : 'none',
+                    }}
+                  />
+                ))}
+              </div>
+              <div style={{ textAlign: 'center', marginTop: 12, fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 700, letterSpacing: '0.06em' }}>
+                {activeScreenshot + 1} / {screenshots.length}
+              </div>
+            </section>
+
+            {/* VIDEO WALKTHROUGH SECTION */}
+            <section style={{ background: 'rgba(255, 255, 255, 0.01)', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)', margin: '80px 0 0 0', padding: isMobile ? '60px 16px' : '80px 32px' }}>
+              <div style={{ maxWidth: 800, margin: '0 auto', width: '100%' }}>
+                <div style={{ textAlign: 'center', marginBottom: 40 }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-primary-light)', marginBottom: 8, display: 'inline-block' }}>
+                    Demo
+                  </span>
+                  <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? '1.8rem' : '2.5rem', fontWeight: 900, margin: '0 0 8px 0', letterSpacing: '-0.5px' }}>
+                    See It In <span className="text-gradient">Action</span>
+                  </h2>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', margin: 0 }}>
+                    Watch a full gameplay walkthrough of CalcRush.
+                  </p>
+                </div>
+
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  paddingBottom: '56.25%', // 16:9 Aspect Ratio
+                  borderRadius: 24,
+                  overflow: 'hidden',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(124,58,237,.12)',
+                  background: '#000',
+                }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/378Ug6ev5vs"
+                    title="CalcRush App Demo"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 'none',
+                    }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* APP STATS GRID */}
+            <section style={{ maxWidth: 1100, margin: '80px auto 0', padding: '0 16px', width: '100%' }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+                gap: 20,
+              }}>
+                <div className="card stat-card-hover" style={{ padding: '24px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div className="text-gradient" style={{ fontFamily: "'Outfit', sans-serif", fontSize: '2.5rem', fontWeight: 900 }}>3</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+                    Difficulty Levels
+                  </div>
+                </div>
+                <div className="card stat-card-hover" style={{ padding: '24px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div className="text-gradient" style={{ fontFamily: "'Outfit', sans-serif", fontSize: '2.5rem', fontWeight: 900 }}>∞</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+                    Math Questions
+                  </div>
+                </div>
+                <div className="card stat-card-hover" style={{ padding: '24px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div className="text-gradient" style={{ fontFamily: "'Outfit', sans-serif", fontSize: '2.5rem', fontWeight: 900 }}>⏱</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+                    Timed Rounds
+                  </div>
+                </div>
+                <div className="card stat-card-hover" style={{ padding: '24px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div className="text-gradient" style={{ fontFamily: "'Outfit', sans-serif", fontSize: '2.5rem', fontWeight: 900 }}>📊</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+                    Stats Tracking
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* FEATURES GRID */}
+            <section style={{ maxWidth: 1100, margin: '80px auto 0', padding: '0 16px', width: '100%' }}>
+              <div style={{ textAlign: 'center', marginBottom: 48 }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-primary-light)', marginBottom: 8, display: 'inline-block' }}>
+                  Features
+                </span>
+                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 24 : 32, fontWeight: 900, margin: 0 }}>
+                  What Makes It <span className="text-gradient">Addictive</span>
+                </h2>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: 24,
+              }}>
+                {features.map((f, i) => (
+                  <div 
+                    key={i} 
+                    className="card feat-card-hover" 
+                    style={{ 
+                      padding: '28px 24px', 
+                      display: 'flex', 
+                      gap: 18, 
+                    }}
+                  >
+                    <span style={{ fontSize: 32, flexShrink: 0 }}>{f.icon}</span>
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800 }}>{f.title}</h3>
+                      <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
+                        {f.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* TECH STACK chips wrapper */}
+            <section style={{ background: 'rgba(255, 255, 255, 0.01)', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)', margin: '80px 0 0 0', padding: isMobile ? '60px 16px' : '80px 32px' }}>
+              <div style={{ maxWidth: 800, margin: '0 auto', width: '100%' }}>
+                <div style={{ textAlign: 'center', marginBottom: 40 }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-primary-light)', marginBottom: 8, display: 'inline-block' }}>
+                    Tech Stack
+                  </span>
+                  <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? '1.8rem' : '2.5rem', fontWeight: 900, margin: '0 0 8px 0', letterSpacing: '-0.5px' }}>
+                    Built With
+                  </h2>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 12,
+                  justifyContent: 'center',
+                }}>
+                  {[
+                    { icon: '⚛️', name: 'React' },
+                    { icon: '🎨', name: 'CSS Modules' },
+                    { icon: '⚡', name: 'Capacitor' },
+                    { icon: '🤖', name: 'Android SDK' },
+                    { icon: '📱', name: 'AdMob' },
+                    { icon: '🔧', name: 'Gradle' },
+                    { icon: '📦', name: 'Play Console' },
+                  ].map((tech, idx) => (
+                    <div
+                      key={idx}
+                      className="card"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        padding: '10px 20px',
+                        borderRadius: 50,
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        background: 'var(--color-surface)',
+                      }}
+                    >
+                      <span style={{ fontSize: '1.1rem' }}>{tech.icon}</span>
+                      <span>{tech.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* STATUS CTA */}
+            <section style={{ padding: '85px 16px 20px', maxWidth: 760, margin: '0 auto', width: '100%' }}>
+              <div className="card" style={{ padding: isMobile ? '32px 20px' : '48px 40px', textAlign: 'center' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-primary-light)', marginBottom: 12, display: 'inline-block' }}>
+                  Download
+                </span>
+                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.8rem', fontWeight: 900, margin: 0 }}>
+                  🚀 Available on Google Play
+                </h2>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginTop: 12, lineHeight: 1.6 }}>
+                  CalcRush is now live for Android! Get it on Google Play to start your mental math training journey today.
+                </p>
+                <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center' }}>
                   <a 
-                    href="https://play.google.com/store/apps/details?id=com.aldtor.calcrush" 
+                    href="https://play.google.com/store/apps/details?id=com.aldtor.calcrush&pcampaignid=web_share" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="btn btn-primary glow-primary"
+                    className="btn btn-primary glow-primary btn-shimmer"
                     style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 12,
-                      padding: '12px 24px', borderRadius: 16,
-                      textDecoration: 'none', fontWeight: 800,
+                      borderRadius: 16,
+                      padding: '12px 28px',
+                      fontWeight: 800,
+                      fontSize: 14,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      textDecoration: 'none',
                     }}
                   >
                     <span style={{ fontSize: 22 }}>🤖</span>
@@ -294,143 +893,6 @@ export default function LandingPage({ theme, onToggleTheme }) {
                       <div style={{ fontSize: 9, opacity: 0.8, fontWeight: 600, letterSpacing: '0.05em' }}>GET IT ON</div>
                       <div style={{ fontSize: 15, lineHeight: 1.1 }}>Google Play</div>
                     </div>
-                  </a>
-
-                  <button 
-                    onClick={() => setActiveTab('privacy')}
-                    className="btn btn-secondary"
-                    style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 10,
-                      padding: '12px 20px', borderRadius: 16,
-                      fontWeight: 700,
-                    }}
-                  >
-                    📄 Privacy Policy
-                  </button>
-                </div>
-              </div>
-
-              {/* Right Column: Screenshot Carousel */}
-              <div style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
-                background: 'rgba(255,255,255,0.015)', border: '1px solid var(--color-border)',
-                borderRadius: 24, padding: isMobile ? 16 : 24, backdropFilter: 'blur(10px)',
-                width: '100%', maxWidth: 420, margin: '0 auto'
-              }}>
-                <div style={{
-                  width: '100%', height: isMobile ? 300 : 360, borderRadius: 16,
-                  overflow: 'hidden', border: '1px solid var(--color-border)',
-                  boxShadow: '0 12px 30px rgba(0,0,0,0.4)',
-                  background: '#09090f',
-                }}>
-                  <img 
-                    src={screenshots[activeScreenshot].src} 
-                    alt={screenshots[activeScreenshot].title} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-                </div>
-                <div style={{ display: 'flex', gap: 8, overflowX: 'auto', width: '100%', padding: '4px 0', scrollbarWidth: 'none' }}>
-                  {screenshots.map((s, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveScreenshot(idx)}
-                      style={{
-                        flexShrink: 0, width: 56, height: 56, borderRadius: 10,
-                        border: `2px solid ${activeScreenshot === idx ? 'var(--color-primary)' : 'transparent'}`,
-                        outline: 'none', overflow: 'hidden', cursor: 'pointer', padding: 0,
-                        background: 'none', transition: 'border-color 0.2s',
-                        boxShadow: activeScreenshot === idx ? '0 0 10px rgba(139,92,246,0.3)' : 'none',
-                      }}
-                    >
-                      <img src={s.src} alt={s.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </button>
-                  ))}
-                </div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)', letterSpacing: '0.04em' }}>
-                  Preview: {screenshots[activeScreenshot].title}
-                </div>
-              </div>
-            </section>
-
-            {/* Features Grid */}
-            <section style={{
-              background: 'rgba(255,255,255,0.01)',
-              borderTop: '1px solid var(--color-border)',
-              borderBottom: '1px solid var(--color-border)',
-              padding: isMobile ? '60px 16px' : '80px 32px',
-              width: '100%',
-            }}>
-              <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 48 }}>
-                  <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 24 : 32, fontWeight: 900, margin: 0 }}>
-                    Packed with Premium Features
-                  </h2>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginTop: 8 }}>
-                    Designed with gorgeous ergonomics, custom arithmetic filters, and responsive design.
-                  </p>
-                </div>
-
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                  gap: 24,
-                }}>
-                  {features.map((f, i) => (
-                    <div 
-                      key={i} 
-                      className="card" 
-                      style={{ 
-                        padding: '28px 24px', 
-                        display: 'flex', 
-                        gap: 18, 
-                        transition: 'transform 0.3s ease, border-color 0.3s ease',
-                      }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                        e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.borderColor = 'var(--color-border)';
-                      }}
-                    >
-                      <span style={{ fontSize: 32, flexShrink: 0 }}>{f.icon}</span>
-                      <div>
-                        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800 }}>{f.title}</h3>
-                        <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
-                          {f.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Quick Contact Promo Card */}
-            <section style={{ padding: '60px 16px 20px', maxWidth: 760, margin: '0 auto', width: '100%' }}>
-              <div className="card" style={{ padding: isMobile ? '32px 20px' : '48px 40px', textAlign: 'center' }}>
-                <div style={{ fontSize: 44, marginBottom: 12 }}>📬</div>
-                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: 24, fontWeight: 900, margin: 0 }}>
-                  Need Help or Have Feedback?
-                </h2>
-                <p style={{ color: 'var(--color-text-muted)', fontSize: 14, marginTop: 8, lineHeight: 1.6 }}>
-                  Our team is committed to delivering the best mental math experience. Reach out with feature ideas, bug reports, or partnership opportunities.
-                </p>
-                <div style={{ marginTop: 24, display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <button 
-                    onClick={() => setActiveTab('support')}
-                    className="btn btn-primary"
-                    style={{ borderRadius: 12, padding: '12px 24px' }}
-                  >
-                    Open Support Hub
-                  </button>
-                  <a 
-                    href="mailto:aldtor.dev@gmail.com" 
-                    className="btn btn-secondary"
-                    style={{ borderRadius: 12, padding: '12px 24px', textDecoration: 'none' }}
-                  >
-                    Email Developer
                   </a>
                 </div>
               </div>

@@ -26,6 +26,7 @@ export default function App() {
   const [theme, setTheme] = useState(() => loadStorage().theme || 'dark');
   const [adLoading, setAdLoading] = useState(false);
   const [quizKey, setQuizKey] = useState(0);
+  const [playDemo, setPlayDemo] = useState(false);
 
   // Apply theme
   useEffect(() => {
@@ -146,11 +147,15 @@ export default function App() {
 
   const isNative = Capacitor.isNativePlatform();
 
-  if (!isNative) {
+  if (!isNative && !playDemo) {
     return (
       <LandingPage
         theme={theme}
         onToggleTheme={toggleTheme}
+        onPlayDemo={() => {
+          setScreen(SCREEN.HOME);
+          setPlayDemo(true);
+        }}
       />
     );
   }
@@ -169,6 +174,7 @@ export default function App() {
           onToggleTheme={toggleTheme}
           onShowStats={handleShowStats}
           onUpdateSettings={handleUpdateSettings}
+          onExitDemo={!isNative ? () => setPlayDemo(false) : null}
         />
       )}
       {screen === SCREEN.QUIZ && quizConfig && (

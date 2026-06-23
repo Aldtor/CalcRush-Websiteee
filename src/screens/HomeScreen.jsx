@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MODES, OPERATIONS, DIFFICULTIES } from '../utils/mathUtils';
 import Watermark from '../components/Watermark';
 
-export default function HomeScreen({ onStart, storageData, theme, onToggleTheme, onShowStats, onUpdateSettings }) {
+export default function HomeScreen({ onStart, storageData, theme, onToggleTheme, onShowStats, onUpdateSettings, onExitDemo }) {
   const [selectedMode, setSelectedMode] = useState(storageData.lastMode || 'basic');
   const [selectedOp, setSelectedOp] = useState(storageData.lastOperation || 'addition');
   const [selectedDiff, setSelectedDiff] = useState(storageData.lastDifficulty || 'easy');
@@ -58,7 +58,7 @@ export default function HomeScreen({ onStart, storageData, theme, onToggleTheme,
             boxShadow: '0 4px 16px rgba(124,58,237,0.4)',
           }}>
             <img
-              src="/logo.png"
+               src="/logo.png"
               alt="CalcRush"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
@@ -68,7 +68,16 @@ export default function HomeScreen({ onStart, storageData, theme, onToggleTheme,
             <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500, letterSpacing: '0.04em' }}>Math Practice</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {onExitDemo && (
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={onExitDemo}
+              style={{ padding: '8px 12px', fontSize: 13, minHeight: 36 }}
+            >
+              🚪 Exit Demo
+            </button>
+          )}
           <button
             className="btn btn-secondary btn-sm"
             onClick={onShowStats}
